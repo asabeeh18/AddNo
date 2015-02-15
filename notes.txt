@@ -1,0 +1,29 @@
+SCALE LARGE BITMAPS
+Before you set the downloaded bitmap to your ImageView, you have to compress your bitmap according to the width and height of your ImageView.
+You have to create a scaled bitmap like this,
+ bm1=Bitmap.createScaledBitmap(bm, 300, 300,true);
+imgView.setImageBitmap(bm1);
+
+HTTP REQUEST
+ String ip = (String) arg0[0];
+        ip = "http://" + ip;    //http necessary
+        URL url = new URL(ip);
+        URLConnection conn = url.openConnection();
+        conn.setDoOutput(true);
+        OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+        wr.write(ip);
+        wr.flush(); //flush post requests
+        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        StringBuilder sb = new StringBuilder();
+        String line = null;
+        // Read Server Response
+        while ((line = reader.readLine()) != null) {
+            sb.append(line);
+            break;
+        }
+
+IMAGE DOWNLAD AND VIEW
+//wATCH OUT FOR xml(gave me headache)
+URL newurl = new URL(urldisplay);
+mIcon11 = BitmapFactory.decodeStream(newurl.openConnection() .getInputStream());
+bmImage.setImageBitmap(res);
