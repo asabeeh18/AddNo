@@ -1,13 +1,14 @@
 package com.tct.scrolllist;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,21 +16,26 @@ import java.util.List;
  */
 public class LIster extends BaseAdapter {
     Context context;
-    public LIster(Context context)
+    List<Quote> objList;
+    Context act;
+    public LIster(List<Quote> objList,Context act)
     {
-        this.context=context;
+        this.act=act;
+      //  this.context=context;
+        //this.codeLearnLessons=codeLearnLessons;
+        this.objList = objList;
+        Log.d("State","Constructor:LIster");
     }
-    List<codeLearnChapter> codeLearnChapterList = getDataForListView();
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return codeLearnChapterList.size();
+        return objList.size();
     }
 
     @Override
-    public codeLearnChapter getItem(int arg0) {
+    public Quote getItem(int arg0) {
         // TODO Auto-generated method stub
-        return codeLearnChapterList.get(arg0);
+        return objList.get(arg0);
     }
 
     @Override
@@ -43,34 +49,20 @@ public class LIster extends BaseAdapter {
 
         if(arg1==null)
         {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) act.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             arg1 = inflater.inflate(R.layout.listitem, arg2,false);
         }
 
         TextView chapterName = (TextView)arg1.findViewById(R.id.textView1);
         TextView chapterDesc = (TextView)arg1.findViewById(R.id.textView2);
+        ImageView bM=(ImageView)arg1.findViewById(R.id.imageView1);
+        Quote chapter = objList.get(arg0);
 
-        codeLearnChapter chapter = codeLearnChapterList.get(arg0);
-
-        chapterName.setText(chapter.chapterName);
-        chapterDesc.setText(chapter.chapterDescription);
-
+        chapterName.setText(chapter.says);
+        chapterDesc.setText(chapter.text);
+        bM.setImageBitmap(chapter.img);
+        Log.d("State","Got View Infalted");
         return arg1;
     }
-    public List<codeLearnChapter> getDataForListView()
-    {
-        List<codeLearnChapter> codeLearnChaptersList = new ArrayList<codeLearnChapter>();
 
-        for(int i=0;i<10;i++)
-        {
-
-            codeLearnChapter chapter = new codeLearnChapter();
-            chapter.chapterName = "Chapter "+i;
-            chapter.chapterDescription = "This is description for chapter "+i;
-            codeLearnChaptersList.add(chapter);
-        }
-
-        return codeLearnChaptersList;
-
-    }
 }
