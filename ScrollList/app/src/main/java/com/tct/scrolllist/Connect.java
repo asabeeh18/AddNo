@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,9 +22,12 @@ import java.util.List;
  */
 public class Connect extends AsyncTask<String,Void,Quote>
 {
-    List<Quote> objList=new ArrayList<>();
-    ListView mainList;
+    static List<Quote> objList=new ArrayList<>();
+    static ListView mainList;
+   static LIster customAdapter;
+    static boolean set=false;
     Context act;
+
     public Connect(ListView mainList,Context act)
     {
         this.act=act;
@@ -78,13 +82,32 @@ public class Connect extends AsyncTask<String,Void,Quote>
     }
     protected void onPostExecute(Quote res) {
         Log.d("State", "Downloaded");
-        objList.add(res);
-        Log.d("State", "Added in List");
-        LIster customAdapter = new LIster(objList,act);
-        Log.d("State", "Constructor Lister");
-        mainList.setAdapter(customAdapter);
+        for(int i=0;i<9;i++)
+            objList.add(res);
+        if(customAdapter==null) {
 
-      //  img.setImageBitmap(res.img);
+            Log.d("State", "Added in List");
+            customAdapter = new LIster(objList, act);
+            Log.d("State", "Constructor Lister");
+            mainList.setAdapter(customAdapter);
+            Log.d("State", "SET listner");
+            mainList.setOnScrollListener(new EndlessScrollListener(mainList, act));
+        }
+        else
+        {
+
+            Log.d("State", "Shiiiiiiit--------------");
+            customAdapter.notifyDataSetChanged();
+
+            int firstVisibleItem = mainList.getFirstVisiblePosition();
+            int oldCount = customAdapter.getCount();
+            View view = mainList.getChildAt(0);
+            int pos = (mainList == null ? 0 :  mainList.getTop());
+            customAdapter.notifyDataSetChanged();
+            mainList.setSelectionFromTop(firstVisibleItem, 0);
+
+        }
+        //  img.setImageBitmap(res.img);
         Log.d("State", "ALL Done !! STOp");
     }
 }

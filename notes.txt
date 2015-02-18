@@ -27,3 +27,9 @@ IMAGE DOWNLAD AND VIEW
 URL newurl = new URL(urldisplay);
 mIcon11 = BitmapFactory.decodeStream(newurl.openConnection() .getInputStream());
 bmImage.setImageBitmap(res);
+
+
+
+
+
+ extends AsyncTask<String,Void,Quote>   <DoinBAckground,onprogressupdate,postexecute>
