@@ -30,6 +30,6 @@ bmImage.setImageBitmap(res);
 
 
 
-
-
+call....
+new SigninActivity().execute(username,password);
  extends AsyncTask<String,Void,Quote>   <DoinBAckground,onprogressupdate,postexecute>

@@ -1,4 +1,3 @@
-GCM.php
 <?php
  
 class GCM {

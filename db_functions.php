@@ -26,7 +26,8 @@ class DB_Functions {
         // insert user into database
         $result = mysql_query("INSERT INTO gcm_users(name, email, gcm_regid, created_at) VALUES('$name', '$email', '$gcm_regid', NOW())");
         // check for successful store
-        if ($result) {
+        if ($result) 
+		{
             // get user details
             $id = mysql_insert_id(); // last inserted id
             $result = mysql_query("SELECT * FROM gcm_users WHERE id = $id") or die(mysql_error());
@@ -36,7 +37,9 @@ class DB_Functions {
             } else {
                 return false;
             }
-        } else {
+        } 
+		else 
+		{
             return false;
         }
     }

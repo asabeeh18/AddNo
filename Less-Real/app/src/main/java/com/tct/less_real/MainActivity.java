@@ -3,12 +3,14 @@ package com.tct.less_real;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
+import android.app.ActionBar;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -19,9 +21,12 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        String[] aa=new String[]{"http://opnz.freeiz.com/","http://www.less-real.com/imagevault/uploaded/quotefaces/Saito-18056.jpg","http://opnz.freeiz.com/un.php"};
+        ListView mainList = (ListView)findViewById(R.id.listView1);
+        // ImageView img=(ImageView)findViewById(R.id.img);
+      //  Log.d("bar",""+getActionBar().toString());
+     //   new Connect(mainList,this,getActionBar()).execute(aa);
         pref = getSharedPreferences("cookie", Context.MODE_PRIVATE);
-        if(pref==null)
-            Log.d("State","NULLA"+pref.toString());
         if (pref.contains("user"))
         {
             user=pref.getString("user","");
@@ -29,6 +34,8 @@ public class MainActivity extends ActionBarActivity {
         }
         else
             Log.d("State","USer NOTFOUND: "+user);
+
+
     }
 
 
