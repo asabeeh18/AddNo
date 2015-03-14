@@ -23,8 +23,8 @@ public class MainActivity extends ActionBarActivity {
     public void SendRequest(View view)
     {
        // Log.d("stat","IN");
-        new Sender().execute("");
-        Toast.makeText(this,"Buzzed!!", Toast.LENGTH_LONG).show();
+        new Sender(this).execute("");
+
     }
     public void SendText(View view)
     {
@@ -37,7 +37,7 @@ public class MainActivity extends ActionBarActivity {
     public void Send(View view)
     {
         String txt=sendingText.getText().toString();
-        Toast.makeText(this,"Text Sent:"+txt, Toast.LENGTH_LONG).show();
+        new Sender(this).execute(txt);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

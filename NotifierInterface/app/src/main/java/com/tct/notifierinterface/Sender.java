@@ -1,45 +1,88 @@
 package com.tct.notifierinterface;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * Created by Ahmed on 3/14/2015.
  */
 public class Sender extends AsyncTask<String,Void,String>//   <DoinBAckground,onprogressupdate,postexecute>
 {
-    @Override
-    protected void onPostExecute(String s) {
-        super.onPostExecute(s);
+    Context con;
+    public Sender(Context con)
+    {
+        this.con=con;
     }
 
     @Override
-    protected String doInBackground(String... params) {
+    protected void onPostExecute(String s)
+    {
+        Log.d("OK",s);
+        Toast.makeText(con,"Buzzed::"+s, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected String doInBackground(String... params)
+    {
         String txt=params[0];
-        try {
+        try
+        {
             HttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost("http://opnz.freeiz.com/register.php");
-            List<NameValuePair> pairs = new ArrayList<>();
-            pairs.add(new BasicNameValuePair("regId", msg));
-            pairs.add(new BasicNameValuePair("name", name));
-            post.setEntity(new UrlEncodedFormEntity(pairs));
-            HttpResponse response = client.execute(post);
+            HttpGet get= new HttpGet("http://opnz.freeiz.com/send_message.php?message="+txt);
+            HttpResponse response = client.execute(get);
             Log.d("OK", response.toString());
+            HttpEntity entity =response.getEntity();
+            InputStream ins=entity.getContent();
+            return convertStreamToString(ins);
         }
         catch(Exception e)
         {
             Log.d("E",e.toString());
         }
+        return "";
+    }
+
+    public static String convertStreamToString(InputStream is)
+    {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+
+        String line = null;
+        try
+        {
+            while ((line = reader.readLine()) != null)
+            {
+                sb.append(line + "\n");
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                is.close();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return sb.toString();
     }
 }

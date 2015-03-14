@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -17,7 +18,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +77,9 @@ public class registerNew extends AsyncTask<Void,Void,String>
     }
 
     @Override
-    protected void onPostExecute(String msg) {
+    protected void onPostExecute(String msg)
+    {
+
         Log.d("GCM","tered"+msg);
     }
 
@@ -83,7 +89,8 @@ public class registerNew extends AsyncTask<Void,Void,String>
      * device sends upstream messages to a server that echoes back the message
      * using the 'from' address in the message.
      */
-    private void sendRegistrationIdToBackend(String msg) {
+    private void sendRegistrationIdToBackend(String msg)
+    {
         // Your implementation here.
         try {
             HttpClient client = new DefaultHttpClient();
@@ -93,12 +100,44 @@ public class registerNew extends AsyncTask<Void,Void,String>
             pairs.add(new BasicNameValuePair("name", name));
             post.setEntity(new UrlEncodedFormEntity(pairs));
             HttpResponse response = client.execute(post);
-            Log.d("OK",response.toString());
+            HttpEntity entity =response.getEntity();
+            InputStream ins=entity.getContent();
+            Log.d("resp",convertStreamToString(ins));
         }
         catch(Exception e)
         {
             Log.d("E",e.toString());
         }
+    }
+    public static String convertStreamToString(InputStream is)
+    {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+
+        String line = null;
+        try
+        {
+            while ((line = reader.readLine()) != null)
+            {
+                sb.append(line + "\n");
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                is.close();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return sb.toString();
     }
     /**
      * Stores the registration ID and app versionCode in the application's
