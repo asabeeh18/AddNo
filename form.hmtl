@@ -1,0 +1,11 @@
+
+<html>
+<form action="http://opnz.freeiz.com/register.php" method="POST">
+<input type="text" name="name" >
+<br>
+regId:<br>
+<input type="text" name="regId">
+<br><br>
+<input type="submit" value="Submit">
+</form>
+</html>

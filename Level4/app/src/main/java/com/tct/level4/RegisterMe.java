@@ -1,48 +1,39 @@
-package com.tct.notifierinterface;
+package com.tct.level4;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 
-public class MainActivity extends ActionBarActivity {
-    TextView sendingText;
-    Button sendingButton;
+public class RegisterMe extends ActionBarActivity {
+
+    GoogleCloudMessaging gcm;
+    String name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_register_me);
+        gcm = GoogleCloudMessaging.getInstance(this);
+
     }
 
-    public void SendRequest(View view)
+    public void registerNow(View view)
     {
-       // Log.d("stat","IN");
-        new Sender().execute("");
-        Toast.makeText(this,"Buzzed!!", Toast.LENGTH_LONG).show();
-    }
-    public void SendText(View view)
-    {
-        sendingText = (TextView)findViewById(R.id.text);
-        sendingText.setVisibility(View.VISIBLE);
-        sendingButton=(Button)findViewById(R.id.sendingButton);
-        sendingButton.setVisibility(View.VISIBLE);
+        name = ((EditText)findViewById(R.id.nameText)).getText().toString();
+        if(name!=null)
+          new registerNew(gcm,this,name).execute();
     }
 
-    public void Send(View view)
-    {
-        String txt=sendingText.getText().toString();
-        Toast.makeText(this,"Text Sent:"+txt, Toast.LENGTH_LONG).show();
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_register_me, menu);
         return true;
     }
 

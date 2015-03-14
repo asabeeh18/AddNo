@@ -1,6 +1,7 @@
 package com.tct.level4;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -30,7 +31,7 @@ public class MainActivity extends ActionBarActivity {
      * Substitute you own sender ID here. This is the project number you got
      * from the API Console, as described in "Getting Started."
      */
-    String SENDER_ID = "151235883577";
+    static String SENDER_ID = "151235883577";
 
     /**
      * Tag used on log messages.
@@ -79,12 +80,14 @@ public class MainActivity extends ActionBarActivity {
         // Check if app was updated; if so, it must clear the registration ID
         // since the existing registration ID is not guaranteed to work with
         // the new app version.
+        /*
         int registeredVersion = prefs.getInt(PROPERTY_APP_VERSION, Integer.MIN_VALUE);
         int currentVersion = getAppVersion(context);
         if (registeredVersion != currentVersion) {
             Log.i(TAG, "App version changed.");
             return "";
         }
+        */
         return registrationId;
     }
     /**
@@ -109,7 +112,8 @@ public class MainActivity extends ActionBarActivity {
      */
     private void registerInBackground() {
         Log.d(TAG,"registering...");
-        new registerNew(gcm,context,SENDER_ID).execute();
+        Intent intent = new Intent(this, RegisterMe.class);
+        startActivity(intent);
     }
 
 

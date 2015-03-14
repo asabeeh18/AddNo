@@ -1,44 +1,20 @@
-package com.tct.notifierinterface;
+package com.tct.monitor;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
-    TextView sendingText;
-    Button sendingButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
 
-    public void SendRequest(View view)
-    {
-       // Log.d("stat","IN");
-        new Sender().execute("");
-        Toast.makeText(this,"Buzzed!!", Toast.LENGTH_LONG).show();
-    }
-    public void SendText(View view)
-    {
-        sendingText = (TextView)findViewById(R.id.text);
-        sendingText.setVisibility(View.VISIBLE);
-        sendingButton=(Button)findViewById(R.id.sendingButton);
-        sendingButton.setVisibility(View.VISIBLE);
-    }
 
-    public void Send(View view)
-    {
-        String txt=sendingText.getText().toString();
-        Toast.makeText(this,"Text Sent:"+txt, Toast.LENGTH_LONG).show();
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

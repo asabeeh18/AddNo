@@ -9,7 +9,17 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Ahmed on 3/11/2015.
@@ -22,12 +32,14 @@ public class registerNew extends AsyncTask<Void,Void,String>
     Context context;
     String SENDER_ID;
     String regid;
+    String name;
     SharedPreferences prefs;
-    public registerNew(GoogleCloudMessaging gcm,Context context,String SENDER_ID)
+    public registerNew(GoogleCloudMessaging gcm,Context context,String name)
     {
         this.gcm=gcm;
         this.context=context;
-        this.SENDER_ID=SENDER_ID;
+        this.SENDER_ID=MainActivity.SENDER_ID;
+        this.name=name;
     }
     @Override
     protected String doInBackground(Void... params) {
@@ -37,13 +49,13 @@ public class registerNew extends AsyncTask<Void,Void,String>
                 gcm = GoogleCloudMessaging.getInstance(context);
             }
             regid = gcm.register(SENDER_ID);
-            msg = "Device registered, registration ID=" + regid;
+            msg = regid;
 
             // You should send the registration ID to your server over HTTP,
             // so it can use GCM/HTTP or CCS to send messages to your app.
             // The request to your server should be authenticated if your app
             // is using accounts.
-            sendRegistrationIdToBackend();
+            sendRegistrationIdToBackend(msg);
 
             // For this demo: we don't need to send it because the device
             // will send upstream messages to a server that echo back the
@@ -71,8 +83,22 @@ public class registerNew extends AsyncTask<Void,Void,String>
      * device sends upstream messages to a server that echoes back the message
      * using the 'from' address in the message.
      */
-    private void sendRegistrationIdToBackend() {
+    private void sendRegistrationIdToBackend(String msg) {
         // Your implementation here.
+        try {
+            HttpClient client = new DefaultHttpClient();
+            HttpPost post = new HttpPost("http://opnz.freeiz.com/register.php");
+            List<NameValuePair> pairs = new ArrayList<>();
+            pairs.add(new BasicNameValuePair("regId", msg));
+            pairs.add(new BasicNameValuePair("name", name));
+            post.setEntity(new UrlEncodedFormEntity(pairs));
+            HttpResponse response = client.execute(post);
+            Log.d("OK",response.toString());
+        }
+        catch(Exception e)
+        {
+            Log.d("E",e.toString());
+        }
     }
     /**
      * Stores the registration ID and app versionCode in the application's
