@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import uk.co.deanwild.flowtextview.FlowTextView;
+
 /**
  * Created by Ahmed on 2/18/2015.
  */
@@ -54,13 +56,16 @@ public class LIster extends BaseAdapter {
             arg1 = inflater.inflate(R.layout.listitem, arg2,false);
         }
 
+
+        FlowTextView chapterDesc = (FlowTextView)arg1.findViewById(R.id.textView2);
         TextView chapterName = (TextView)arg1.findViewById(R.id.textView1);
-        TextView chapterDesc = (TextView)arg1.findViewById(R.id.textView2);
+       // FlowTextView chapterDesc = (FlowTextView)arg1.findViewById(R.id.textView2);
         ImageView bM=(ImageView)arg1.findViewById(R.id.imageView1);
         Quote chapter = objList.get(arg0);
 
         chapterName.setText(chapter.says);
         chapterDesc.setText(chapter.text);
+      //  chapterDesc.invalidate();
         bM.setImageBitmap(chapter.img);
         Log.d("State", "Got View Inflated");
         return arg1;

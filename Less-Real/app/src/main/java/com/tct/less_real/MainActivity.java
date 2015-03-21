@@ -16,6 +16,8 @@ import android.widget.ListView;
 public class MainActivity extends ActionBarActivity {
     SharedPreferences pref;
     String user;
+    ActionBar actionBar;
+    MenuItem mn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +27,8 @@ public class MainActivity extends ActionBarActivity {
         ListView mainList = (ListView)findViewById(R.id.listView1);
         // ImageView img=(ImageView)findViewById(R.id.img);
       //  Log.d("bar",""+getActionBar().toString());
-     //   new Connect(mainList,this,getActionBar()).execute(aa);
+
+        new Connect(mainList,this,getActionBar()).execute(aa);
         pref = getSharedPreferences("cookie", Context.MODE_PRIVATE);
         if (pref.contains("user"))
         {
@@ -34,7 +37,7 @@ public class MainActivity extends ActionBarActivity {
         }
         else
             Log.d("State","USer NOTFOUND: "+user);
-
+       // new Connect(mainList,this,actionBar).execute(aa);
 
     }
 
@@ -45,7 +48,7 @@ public class MainActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         if(user==null)
         {
-            MenuItem mn= menu.findItem(R.id.login);
+            mn= menu.findItem(R.id.login);
                     mn.setTitle("Login");
         }
         else
@@ -67,7 +70,17 @@ public class MainActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.login) {
             if(user==null)
+            {
                 loginSeq();
+
+                pref = getSharedPreferences("cookie", Context.MODE_PRIVATE);
+                if (pref.contains("user")) {
+                    user = pref.getString("user", "");
+                    mn.setTitle(user);
+                    finish();
+                }
+            }
+
             return true;
         }
 
@@ -75,10 +88,12 @@ public class MainActivity extends ActionBarActivity {
     }
     public void loginSeq()
     {
-        int code=2;
+
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+        /*
         if(code==1)
             findViewById(R.id.login).setVisibility(View.GONE);
+        */
     }
 }

@@ -96,7 +96,7 @@ public class Connect extends AsyncTask<String,Void,Quote>
         else
         {
 
-            Log.d("State", "Shiiiiiiit--------------");
+
             customAdapter.notifyDataSetChanged();
 
             int firstVisibleItem = mainList.getFirstVisiblePosition();

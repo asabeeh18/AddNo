@@ -27,7 +27,8 @@ public class RegisterMe extends ActionBarActivity {
     {
         name = ((EditText)findViewById(R.id.nameText)).getText().toString();
         if(name!=null)
-          new registerNew(gcm,this,name).execute();
+            new registerNew(gcm,this,name).execute();
+        finish();
     }
 
     @Override

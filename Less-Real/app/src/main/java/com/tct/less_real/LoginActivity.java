@@ -1,5 +1,7 @@
 package com.tct.less_real;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +16,9 @@ public class LoginActivity extends ActionBarActivity {
     private EditText username,password;
     private TextView tv;
     private Menu mn;
+    SharedPreferences pref;
+    public static int done=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +32,8 @@ public class LoginActivity extends ActionBarActivity {
         String usr=username.getText().toString();
         String pass=password.getText().toString();
         new CheckingCredsAsync(this,mn).execute(usr,pass);
+        //pref = getSharedPreferences("cookie", Context.MODE_PRIVATE);
+
         finish();
        // tv=(TextView)findViewById(R.id.chk);
         //this.tv.setText("DONE!");
