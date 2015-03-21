@@ -11,27 +11,25 @@
 
 
     <uk.co.deanwild.flowtextview.FlowTextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/textView2"
 
         android:text="Description"
-        android:textSize="16sp"
+
 
         android:background="#1b1b1f"
-        android:layout_below="@+id/textView1"
+
         android:textColor="@android:color/white">
 
         <ImageView
             android:id="@+id/imageView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#ffffbb52"
-
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:minHeight="50dp"
-            android:minWidth="50dp" />
+            android:layout_alignParentTop="true"
+            android:background="#ffffbb52"
+            />
 
     </uk.co.deanwild.flowtextview.FlowTextView>
 
@@ -39,11 +37,8 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="23dp"
-        android:layout_toRightOf="@+id/imageView1"
-        android:text="CodeLearn Chapter 1"
+
+        android:text="CodeLearn 1"
         android:background="#1b1b1f"
         android:textColor="@android:color/white" />
 
