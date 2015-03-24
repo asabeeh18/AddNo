@@ -7,36 +7,41 @@
     android:background="#ff71ff34">
 
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
+    <uk.co.deanwild.flowtextview.FlowTextView
+
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffbb52"
-        android:layout_alignTop="@+id/textView2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:minHeight="50dp"
-        android:minWidth="50dp" />
+        android:id="@+id/textView2"
+
+        android:text="Description"
+
+
+        android:textSize="24sp"
+        android:background="#1b1b1f"
+
+        android:textColor="@android:color/white"
+        android:longClickable="false"
+        android:clickable="false">
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="#ffffbb52"/>
+
+    </uk.co.deanwild.flowtextview.FlowTextView>
+
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/imageView1"
-        android:text="CodeLearn Chapter 1"
-        android:background="#ff50fff5" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView1"
-        android:text="Description"
-        android:textSize="16sp"
-        android:layout_toRightOf="@+id/imageView1"
-        android:background="#ffff001b"
-        android:layout_below="@+id/textView1" />
+        android:text="CodeLearn 1"
+        android:background="#1b1b1f"
+        android:textColor="@android:color/white"/>
+
 
 
 </RelativeLayout>

@@ -10,7 +10,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import uk.co.deanwild.flowtextview.FlowTextView;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -18,6 +22,7 @@ public class MainActivity extends ActionBarActivity {
     String user;
     ActionBar actionBar;
     MenuItem mn;
+    Context act=this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +44,21 @@ public class MainActivity extends ActionBarActivity {
             Log.d("State","USer NOTFOUND: "+user);
        // new Connect(mainList,this,actionBar).execute(aa);
 
+
+
+        mainList.setLongClickable(true);
+        mainList.setClickable(true);
+        mainList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int pos, long id) {
+                // TODO Auto-generated method stub
+                Toast.makeText(act, "Added to favourites", Toast.LENGTH_LONG).show();
+                Log.d("long clicked", "pos: " + pos);
+
+                return true;
+            }
+        });
     }
 
 

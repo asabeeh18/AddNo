@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,6 +21,20 @@ public class MainActivity extends Activity {
         ListView mainList = (ListView)findViewById(R.id.listView1);
        // ImageView img=(ImageView)findViewById(R.id.img);
         new Connect(mainList,this).execute(aa);
+       // mainList.setClickable(true);
+        mainList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+        {
+
+            public boolean onItemLongClick(AdapterView <?> arg0, View arg1,
+                                           int pos, long id) {
+                // TODO Auto-generated method stub
+                //  Toast.makeText(this, "Wrong Username/Password! TRY AGAIN!", Toast.LENGTH_LONG).show();
+                Log.d("long clicked","pos: " + pos);
+
+                return true;
+            }
+        });
+
         Log.d("State","EXIT");
     }
     @Override

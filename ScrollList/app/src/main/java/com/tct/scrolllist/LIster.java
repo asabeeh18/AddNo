@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import uk.co.deanwild.flowtextview.FlowTextView;
+
 /**
  * Created by Ahmed on 2/15/2015.
  */
@@ -54,10 +56,11 @@ public class LIster extends BaseAdapter {
         }
 
         TextView chapterName = (TextView)arg1.findViewById(R.id.textView1);
-        TextView chapterDesc = (TextView)arg1.findViewById(R.id.textView2);
+        FlowTextView chapterDesc = (FlowTextView)arg1.findViewById(R.id.textView2);
         ImageView bM=(ImageView)arg1.findViewById(R.id.imageView1);
         Quote chapter = objList.get(arg0);
-
+       // chapterDesc.setOnClickListener(null);
+        chapterDesc.setOnTouchListener(null);
         chapterName.setText(chapter.says);
         chapterDesc.setText(chapter.text);
         bM.setImageBitmap(chapter.img);

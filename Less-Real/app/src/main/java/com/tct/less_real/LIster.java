@@ -29,6 +29,7 @@ public class LIster extends BaseAdapter {
         this.objList = objList;
         Log.d("State","Constructor:LIster");
     }
+
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
@@ -62,12 +63,13 @@ public class LIster extends BaseAdapter {
        // FlowTextView chapterDesc = (FlowTextView)arg1.findViewById(R.id.textView2);
         ImageView bM=(ImageView)arg1.findViewById(R.id.imageView1);
         Quote chapter = objList.get(arg0);
-
+        chapterDesc.setOnTouchListener(null);
         chapterName.setText(chapter.says);
         chapterDesc.setText(chapter.text);
       //  chapterDesc.invalidate();
         bM.setImageBitmap(chapter.img);
         Log.d("State", "Got View Inflated");
+
         return arg1;
     }
 
