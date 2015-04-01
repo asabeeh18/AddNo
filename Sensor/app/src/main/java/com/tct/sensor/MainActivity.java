@@ -30,6 +30,8 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
     boolean sensing=true;
     PowerManager pm;
     BroadcastReceiver mReceiver;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,19 +39,19 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
        /* sensorman=(SensorManager)getSystemService(SENSOR_SERVICE);
         sensorPx=sensorman.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 */
-      /*  IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_USER_PRESENT);
         mReceiver = new BroadReceiver();
         registerReceiver(mReceiver, filter);
-        */
-      /*  Log.d("life","Oncreate");
-        pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
-*/
-       // wakeLock.acquire();
 
-      //  senseSwitch = (Switch) findViewById(R.id.senseSwitch);
+        Log.d("life","On Create");
+        pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Wait for Intent");
+
+         wakeLock.acquire();
+
+        //  senseSwitch = (Switch) findViewById(R.id.senseSwitch);
 
         //set the switch to ON
         //senseSwitch.setChecked(false);
@@ -81,12 +83,15 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
         getWindow().setAttributes(params);
         */
     }
+
+    
+
     //activate
     private void greed()
     {
         sensorman.registerListener(this, sensorPx, SensorManager.SENSOR_DELAY_NORMAL);
-       // wakeLock.acquire();
-     //   sensing=true;
+        // wakeLock.acquire();
+        //   sensing=true;
     }
     //disable
     private void generous()
@@ -109,30 +114,30 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
         wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "My Tag");
         wakeLock.acquire();
     }
-   /* private void act()
-    {
-        if(sensing)
-        {
-            if (!wakeLock.isHeld())
-                wakeLock.acquire();
-        }
-        else
-        {
-            if (wakeLock.isHeld())
-            {
-                sensorman.unregisterListener(this);
-                wakeLock.release();
-            }
-        }
-    }
-*/
+    /* private void act()
+     {
+         if(sensing)
+         {
+             if (!wakeLock.isHeld())
+                 wakeLock.acquire();
+         }
+         else
+         {
+             if (wakeLock.isHeld())
+             {
+                 sensorman.unregisterListener(this);
+                 wakeLock.release();
+             }
+         }
+     }
+ */
     @Override
     public final void onSensorChanged(SensorEvent event) {
         float distance = event.values[0];
         Log.d("val1",distance+"");
         if(distance<5.0)
         {
-           // giveMeBack();
+            // giveMeBack();
            /* lock.disableKeyguard();
             WindowManager.LayoutParams params = getWindow().getAttributes();
             params.flags |= WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON;
@@ -154,7 +159,7 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
     {
         super.onDestroy();
         Log.d("life","INDESTROY");
-       // act();
+        // act();
     }
 
     @Override
@@ -167,7 +172,7 @@ public class MainActivity extends ActionBarActivity implements SensorEventListen
     @Override
     protected void onPause() {
         super.onPause();
-       // unregisterReceiver(mReceiver);
+        // unregisterReceiver(mReceiver);
         Log.d("life","INPAUSE");
     }
 

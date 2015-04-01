@@ -82,6 +82,8 @@ public class Connect extends AsyncTask<String,Void,Quote>
     }
     protected void onPostExecute(Quote res) {
         Log.d("State", "Downloaded");
+		
+		//ading it in 10 times
         for(int i=0;i<9;i++)
             objList.add(res);
         if(customAdapter==null) {

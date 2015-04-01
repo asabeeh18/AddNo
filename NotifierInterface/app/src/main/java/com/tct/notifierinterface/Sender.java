@@ -10,6 +10,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,6 +23,7 @@ import java.io.InputStreamReader;
 public class Sender extends AsyncTask<String,Void,String>//   <DoinBAckground,onprogressupdate,postexecute>
 {
     Context con;
+
     public Sender(Context con)
     {
         this.con=con;
@@ -30,8 +32,24 @@ public class Sender extends AsyncTask<String,Void,String>//   <DoinBAckground,on
     @Override
     protected void onPostExecute(String s)
     {
-        Log.d("OK",s);
-        Toast.makeText(con,"Buzzed::"+s, Toast.LENGTH_LONG).show();
+        String ne = s;
+        String t[]=ne.split("<");
+        Log.d("Debug",t[0]);
+        //Toast.makeText(con,t[0],Toast.LENGTH_LONG).show();
+        try {
+            JSONObject reader = new JSONObject(t[0]);
+            // JSONObject sys = reader.getJSONObject("failure");
+            String k=reader.getString("success");
+
+            // Log.d("Debug1",sys.toString());
+            s = reader.getString("failure");
+            Toast.makeText(con,"Buzzed::"+" Success= "+ k +" Failure= "+s, Toast.LENGTH_LONG).show();
+
+        }
+        catch(Exception ex){ex.printStackTrace();}
+
+
+
     }
 
     @Override
@@ -43,7 +61,7 @@ public class Sender extends AsyncTask<String,Void,String>//   <DoinBAckground,on
             HttpClient client = new DefaultHttpClient();
             HttpGet get= new HttpGet("http://opnz.freeiz.com/send_message.php?message="+txt);
             HttpResponse response = client.execute(get);
-            Log.d("OK", response.toString());
+            //Log.d("doin", response.toString());
             HttpEntity entity =response.getEntity();
             InputStream ins=entity.getContent();
             return convertStreamToString(ins);
