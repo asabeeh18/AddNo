@@ -1,17 +1,53 @@
 package com.example.android.sensoralarmm;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.IBinder;
+import android.os.PowerManager;
+import android.support.v4.content.WakefulBroadcastReceiver;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
 public class MainActivity extends ActionBarActivity {
 
+    PowerManager.WakeLock wakeLock;
+    PowerManager pm;
+    BroadcastReceiver mReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+//        wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Wait for Intent");
+
+        wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK
+                | PowerManager.ACQUIRE_CAUSES_WAKEUP
+                | PowerManager.ON_AFTER_RELEASE, "MyWakeLock");
+        wakeLock.acquire();
+
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_USER_PRESENT);
+        mReceiver = new Broodcast();
+        registerReceiver(mReceiver, filter);
+
+        Log.d("done","done");
+    }
+    class Broodcast extends WakefulBroadcastReceiver
+    {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("Name",intent.getAction());
+            Log.d("String",intent.toString());
+        }
+
+
     }
 
 
