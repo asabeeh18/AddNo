@@ -55,7 +55,8 @@ public class Connect extends AsyncTask<String,Integer,String>
 
     @Override
     protected String doInBackground(String... arg) {
-
+        if(mainList.getAdapter()!=null)
+            Log.d("Count", mainList.getAdapter().getCount()+"");
         publishProgress(0);
         String link = arg[0];
         Log.d("State", "Calling Http at: " + link);

@@ -30,6 +30,7 @@ public class MainActivity extends ActionBarActivity {
     protected static ProgressBar mProgress;
     ListView mainList;
 
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -59,7 +60,8 @@ public class MainActivity extends ActionBarActivity {
 
             new Connect(mainList,this,getActionBar()).execute(url);
         }
-
+        else
+            Log.d("NULLS","MAINLIST NULL NULL NULL");
 
         //mainList.setAdapter(customAdapter);
 
@@ -130,14 +132,17 @@ public class MainActivity extends ActionBarActivity {
         */
         return super.onCreateOptionsMenu(menu);
     }
-    public static final String computeString()
+    public final String computeString()
     {
         String order="desc";
         String order_by="timestamp";
         int num=10;
         int start;
-        if()
-        return "http://www.less-real.com/api/v1/quotes?from="+0+"&num="+num+"&o="+order_by+"&o_d="+order;
+        if(mainList!=null && mainList.getAdapter()!=null)
+            start=mainList.getAdapter().getCount();
+        else
+            start=0;
+        return "http://www.less-real.com/api/v1/quotes?from="+start+"&num="+num+"&o="+order_by+"&o_d="+order;
     }
 
 

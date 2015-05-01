@@ -80,7 +80,7 @@ public class EndlessScrollListener implements AbsListView.OnScrollListener {
             Log.d("State", "<<MORE DATA>>");
             if(mainList !=null)
             {
-                String url=MainActivity.computeString();
+                String url=((MainActivity)act).computeString();
                 new Connect(mainList,act,bar).execute(url);
             }
             //Log.d("Endless",url);
