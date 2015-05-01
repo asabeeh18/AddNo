@@ -12,28 +12,76 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import uk.co.deanwild.flowtextview.FlowTextView;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    String url=computeString();
     SharedPreferences pref;
     String user;
-    ActionBar actionBar;
+   // ActionBar actionBar;
     MenuItem mn;
-    Context act=this;
+    //Context act=this;
+    public static int start=0;
+    protected static ProgressBar mProgress;
+    ListView mainList;
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("State", "onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("State", "onDestroy");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("State", "onPause");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("State", "onResume");
+        //LIster customAdapter = new LIster(objList, act);
+        if(mainList.getAdapter()!=null)
+        {
+            Log.d("NULLS","MAIN LIST NOT NULL");
+
+            new Connect(mainList,this,getActionBar()).execute(url);
+        }
+
+
+        //mainList.setAdapter(customAdapter);
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String[] aa=new String[]{"http://opnz.freeiz.com/","http://www.less-real.com/imagevault/uploaded/quotefaces/Saito-18056.jpg","http://opnz.freeiz.com/un.php"};
-        ListView mainList = (ListView)findViewById(R.id.listView1);
-        // ImageView img=(ImageView)findViewById(R.id.img);
-      //  Log.d("bar",""+getActionBar().toString());
+        Log.d("State", "onCreate");
+        mProgress = (ProgressBar) findViewById(R.id.pBar);
+        //URL constants
+        mainList = (ListView)findViewById(R.id.listView1);
+        //ImageView img=(ImageView)findViewById(R.id.img);
+        //Log.d("bar",""+getActionBar().toString());
 
-        new Connect(mainList,this,getActionBar()).execute(aa);
+        //getActionBar() for future
+        new Connect(mainList,this,getActionBar()).execute(url);
+
+        /*MARKED future scope
+
         pref = getSharedPreferences("cookie", Context.MODE_PRIVATE);
         if (pref.contains("user"))
         {
@@ -42,10 +90,10 @@ public class MainActivity extends ActionBarActivity {
         }
         else
             Log.d("State","USer NOTFOUND: "+user);
-       // new Connect(mainList,this,actionBar).execute(aa);
+       // new Connect(mainList,this,actionBar).execute(url);
 
-
-
+        */
+        /*MARKED future scope
         mainList.setLongClickable(true);
         mainList.setClickable(true);
         mainList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -59,6 +107,7 @@ public class MainActivity extends ActionBarActivity {
                 return true;
             }
         });
+        */
     }
 
 
@@ -66,6 +115,7 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        /*MArked Future Scope
         if(user==null)
         {
             mn= menu.findItem(R.id.login);
@@ -77,9 +127,21 @@ public class MainActivity extends ActionBarActivity {
             mn.setTitle(user);
         }
         Log.d("State","changed:");
+        */
         return super.onCreateOptionsMenu(menu);
     }
+    public static final String computeString()
+    {
+        String order="desc";
+        String order_by="timestamp";
+        int num=10;
+        int start;
+        if()
+        return "http://www.less-real.com/api/v1/quotes?from="+0+"&num="+num+"&o="+order_by+"&o_d="+order;
+    }
 
+
+    //MARKED future scope beyond this point
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -108,7 +170,7 @@ public class MainActivity extends ActionBarActivity {
     }
     public void loginSeq()
     {
-
+        //Change ActionBar after Login
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         /*

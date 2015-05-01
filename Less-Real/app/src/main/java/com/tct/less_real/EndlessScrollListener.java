@@ -1,15 +1,10 @@
 package com.tct.less_real;
 
-import android.app.Activity;
-import android.app.Notification;
 import android.content.Context;
 import android.app.ActionBar;
 import android.util.Log;
-import android.view.View;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 /**
  * Created by Ahmed on 2/18/2015.
@@ -27,7 +22,7 @@ public class EndlessScrollListener implements AbsListView.OnScrollListener {
     private int previousTotal = 0;
     private boolean loading = true;
     static int mLastFirstVisibleItem = 0;
-    String[] aa=new String[]{"http://opnz.freeiz.com/","http://www.less-real.com/imagevault/uploaded/quotefaces/Saito-18056.jpg","http://opnz.freeiz.com/un.php"};
+
     ActionBar bar;
 
     public EndlessScrollListener(final ListView mainList,Context act,ActionBar bar) {
@@ -83,7 +78,14 @@ public class EndlessScrollListener implements AbsListView.OnScrollListener {
             // I load the next page of gigs using a background task,
             // but you can call any function here.
             Log.d("State", "<<MORE DATA>>");
-            new Connect(mainList,act,bar).execute(aa);
+            if(mainList !=null)
+            {
+                String url=MainActivity.computeString();
+                new Connect(mainList,act,bar).execute(url);
+            }
+            //Log.d("Endless",url);
+
+
             loading = true;
         }
     }

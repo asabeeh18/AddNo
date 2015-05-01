@@ -4,4 +4,8 @@
 
     <item android:id="@+id/login"
         app:showAsAction="ifRoom" />
+    <item android:id="@+id/settings"
+        android:title="@string/action_settings"
+        app:showAsAction="ifRoom" />
+
 </menu>

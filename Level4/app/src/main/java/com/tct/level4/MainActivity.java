@@ -1,3 +1,6 @@
+/*URL newurl = new URL(imgLInk);
+            Bitmap img = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
+            */
 package com.tct.level4;
 
 import android.content.Context;
@@ -6,22 +9,80 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.support.v4.app.ActionBarDrawerToggle;
+//import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
-
+//import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
+
+class Custom extends ArrayAdapter{
+    Context context;
+    String [] titles;
+    int resource;
+    public Custom(Context context, int resource, String[] titles){
+        super(context,resource,titles);
+        this.context=context;
+        this.titles=titles;
+        this.resource=resource;
+
+    }
+
+
+    public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View rowView = inflater.inflate(R.layout.drawer_list_item, parent, false);
+        TextView textView = (TextView) rowView.findViewById(R.id.title);
+        ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+        textView.setText(titles[position]);
+        imageView.setImageResource(R.drawable.ic_star);
+
+        return rowView;
+    }
+
+}
+
+
 public class MainActivity extends ActionBarActivity {
+    private String[] titles;
+    private DrawerLayout drawerLayout;
+    private ListView drawerListView;
+    private ActionBarDrawerToggle drawerToggle;
+
+
     public static final String EXTRA_MESSAGE = "message";
     public static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appversion";
@@ -51,10 +112,31 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mDisplay = (TextView) findViewById(R.id.display);
+        if (savedInstanceState == null)
+        {
+            getFragmentManager().beginTransaction().add(R.id.content_frame, new ThisFragment()).commit();
+        }
+        Log.d("ok","frce");
+        titles = new String[]{"HOME", "HISTORY", "SETTINGS"};
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerListView = (ListView) findViewById(R.id.left_drawer);
+        drawerListView.setAdapter(new Custom(this, R.layout.drawer_list_item, titles));
+        drawerListView.setOnItemClickListener(new DrawerItemClickListener());
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_launcher, R.string.hello_world, R.string.app_name);
+Log.d("okpls","beechme");
+        drawerLayout.setDrawerListener(drawerToggle);
+        if(getSupportActionBar()==null)
+               Log.d("XX","XX");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        Log.d("ok1","daad");
+      //  mDisplay = (TextView) findViewById(R.id.display);
 
         context = getApplicationContext();
+
+
+
+
 
         // Check device for Play Services APK. If check succeeds, proceed with
         //  GCM registration.
@@ -68,6 +150,8 @@ public class MainActivity extends ActionBarActivity {
         } else {
             Log.i(TAG, "No valid Google Play Services APK found.");
         }
+        Log.d("ok2","end of oncreate");
+
     }
 
     private String getRegistrationId(Context context) {
@@ -164,5 +248,82 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public class DrawerItemClickListener implements ListView.OnItemClickListener
+    {
+        @Override
+        public void onItemClick(AdapterView parent, View view, int position, long id)
+        {
+            selectItem(position);
+        }
+    }
+
+    private void selectItem(int position)
+    {
+        switch(position)
+        {
+            case 0://This
+                android.app.Fragment frg0 = new ThisFragment();
+                FragmentManager fragmentManager0 = getFragmentManager();
+                fragmentManager0.beginTransaction().replace(R.id.content_frame, frg0).commit();
+                break;
+            case 1: //That
+                android.app.Fragment frg1 = new ThatFragment();
+                FragmentManager fragmentManager1 = getFragmentManager();
+                //setContentView(R.layout.fragment_that);
+                fragmentManager1.beginTransaction().replace(R.id.content_frame, frg1).commit();
+                break;
+            case 2:
+                android.app.Fragment frg2 = new TheOtherFragment();
+                FragmentManager fragmentManager2 = getFragmentManager();
+                fragmentManager2.beginTransaction().replace(R.id.content_frame, frg2).commit();
+                break;
+        }
+
+        drawerListView.setItemChecked(position, true);
+        getSupportActionBar().setTitle(titles[position]);
+        drawerLayout.closeDrawer(drawerListView);
+    }
+
+/*
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        if (drawerToggle.onOptionsItemSelected(item))
+        {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+*/
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends android.app.Fragment {
+
+        public PlaceholderFragment() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            return rootView;
+        }
+
+
+
     }
 }
