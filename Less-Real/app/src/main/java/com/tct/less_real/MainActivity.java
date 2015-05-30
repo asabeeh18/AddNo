@@ -3,30 +3,26 @@ package com.tct.less_real;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.app.ActionBar;
 import android.os.Bundle;
+import android.os.Process;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
-
-import uk.co.deanwild.flowtextview.FlowTextView;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    String url=computeString();
+    public int start=-10;
+    String url= computeURL();
     SharedPreferences pref;
     String user;
    // ActionBar actionBar;
     MenuItem mn;
     //Context act=this;
-    public static int start=0;
+
     protected static ProgressBar mProgress;
     ListView mainList;
 
@@ -41,6 +37,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d("State", "onDestroy");
+        Process.killProcess(Process.myPid());
     }
 
     @Override
@@ -53,10 +50,16 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         Log.d("State", "onResume");
+
         //LIster customAdapter = new LIster(objList, act);
-        if(mainList.getAdapter()!=null)
-        {
+        if(mainList!=null)
             Log.d("NULLS","MAIN LIST NOT NULL");
+    else
+            Log.d("NULLS","MAINLIST NULL NULL NULL");
+
+    if(mainList.getAdapter()!=null)
+        {
+            Log.d("NULLS","MAIN Adapter LIST NOT NULL");
 
             new Connect(mainList,this,getActionBar()).execute(url);
         }
@@ -67,11 +70,21 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+/*    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("MainList",mainList.onSaveInstanceState());
+    }
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
+        if(savedInstanceState!=null) {
+            mainList = savedInstanceState.getParcelable("MainList");
+        }
         Log.d("State", "onCreate");
         mProgress = (ProgressBar) findViewById(R.id.pBar);
         //URL constants
@@ -132,16 +145,12 @@ public class MainActivity extends ActionBarActivity {
         */
         return super.onCreateOptionsMenu(menu);
     }
-    public final String computeString()
+    public synchronized final String computeURL()
     {
         String order="desc";
         String order_by="timestamp";
-        int num=10;
-        int start;
-        if(mainList!=null && mainList.getAdapter()!=null)
-            start=mainList.getAdapter().getCount();
-        else
-            start=0;
+        int num=3;
+        start+=10;
         return "http://www.less-real.com/api/v1/quotes?from="+start+"&num="+num+"&o="+order_by+"&o_d="+order;
     }
 

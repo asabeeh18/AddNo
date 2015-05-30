@@ -52,23 +52,23 @@ public class Connect extends AsyncTask<String,Integer,String>
         else
             pBar.setVisibility(View.GONE);
     }
-
+    private void synkingShip(String link) {
+        Log.d("State", "Calling Http at: " + link);
+        String res = getText(link);
+        res = "{Quote:" + res + "}";
+        try {
+            objList = parseJSON(new JSONObject(res));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     protected String doInBackground(String... arg) {
         if(mainList.getAdapter()!=null)
             Log.d("Count", mainList.getAdapter().getCount()+"");
         publishProgress(0);
         String link = arg[0];
-        Log.d("State", "Calling Http at: " + link);
-        String res= getText(link);
-        res="{Quote:"+res+"}";
-        try{
-            objList=parseJSON(new JSONObject(res));
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        synkingShip(link);
         publishProgress(1);
         return "";
         /*
@@ -94,6 +94,8 @@ public class Connect extends AsyncTask<String,Integer,String>
 
         if(customAdapter==null) {
 
+
+            Log.d("NULLS", "Custom Adapter null");
             Log.d("State", "Added in List");
             customAdapter = new LIster(objList, act);
             Log.d("State", "Constructor Lister");
@@ -104,14 +106,21 @@ public class Connect extends AsyncTask<String,Integer,String>
         else
         {
 
-            customAdapter.notifyDataSetChanged();
+            ((MainActivity)act).runOnUiThread(new Runnable() {
+                public void run() {
+                    customAdapter.notifyDataSetChanged();
+                    int firstVisibleItem = mainList.getFirstVisiblePosition();
+                    int oldCount = customAdapter.getCount();
+                    View view = mainList.getChildAt(0);
+                    int pos = (mainList == null ? 0 : mainList.getTop());
+                    customAdapter.notifyDataSetChanged();
+                    mainList.setSelectionFromTop(firstVisibleItem, 0);
 
-            int firstVisibleItem = mainList.getFirstVisiblePosition();
-            int oldCount = customAdapter.getCount();
-            View view = mainList.getChildAt(0);
-            int pos = (mainList == null ? 0 :  mainList.getTop());
-            customAdapter.notifyDataSetChanged();
-            mainList.setSelectionFromTop(firstVisibleItem, 0);
+                }
+            }); // end of runOnUiThread
+
+           // ((MainActivity)act).start+=10;
+            Log.d("Counter",""+((MainActivity)act).start);
 
         }
         //  img.setImageBitmap(res.img);
@@ -126,16 +135,15 @@ public class Connect extends AsyncTask<String,Integer,String>
         try
         {
             JSONArray qArray= mySon.getJSONArray("Quote");
-            for(int i=0;i<qArray.length();i++)
-            {
+            for(int i=0;i<qArray.length();i++) {
                 Quote send = new Quote();
-                JSONObject jQuote =qArray.getJSONObject(i);
-                send.says=jQuote.getString("author");
-                send.text=jQuote.getString("quote");
+                JSONObject jQuote = qArray.getJSONObject(i);
+                send.says = jQuote.getString("author");
+                send.text = jQuote.getString("quote");
 
 
-                imgLInk=jQuote.getString("image");
-                Log.d("State", "Calling Http2");
+                imgLInk = jQuote.getString("image");
+            //    Log.d("State", "Calling Http2");
                 try {
                     URL newurl = new URL(imgLInk);
                     send.img = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
@@ -146,7 +154,6 @@ public class Connect extends AsyncTask<String,Integer,String>
                 }
                 objList.add(send);
             }
-            MainActivity.start+=10;
             //Log.d("JSON",jQuote.getString("author"));
         }
         catch(Exception e)

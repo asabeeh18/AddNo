@@ -68,7 +68,7 @@ public class LIster extends BaseAdapter {
         chapterDesc.setText(chapter.text);
       //  chapterDesc.invalidate();
         bM.setImageBitmap(chapter.img);
-        Log.d("State", "Got View Inflated");
+      //  Log.d("State", "Got View Inflated");
 
         return arg1;
     }
